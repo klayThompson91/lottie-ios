@@ -8,14 +8,25 @@
 
 #import <Foundation/Foundation.h>
 #import "LOTAnimationView_Compat.h"
+#import "LOTPlatformCompat.h"
 
 typedef void (^LOTAnimationCompletionBlock)(BOOL animationFinished);
+typedef NSDictionary<NSString *, UIColor *> * LOTLayerColorMap;
 
 @interface LOTAnimationView : LOTView
 
 + (instancetype)animationNamed:(NSString *)animationName NS_SWIFT_NAME(init(name:));
++ (instancetype)animationNamed:(NSString *)animationName
+               withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:layerColors:));
+
 + (instancetype)animationNamed:(NSString *)animationName inBundle:(NSBundle *)bundle NS_SWIFT_NAME(init(name:bundle:));
++ (instancetype)animationNamed:(NSString *)animationName
+                      inBundle:(NSBundle *)bundle
+               withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:bundle:layerColors:));
+
 + (instancetype)animationFromJSON:(NSDictionary *)animationJSON NS_SWIFT_NAME(init(json:));
++ (instancetype)animationFromJSON:(NSDictionary *)animationJSON
+                  withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(json:layerColors:));
 
 - (instancetype)initWithContentsOfURL:(NSURL *)url;
 

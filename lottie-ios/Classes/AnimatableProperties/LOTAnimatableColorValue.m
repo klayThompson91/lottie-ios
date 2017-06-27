@@ -29,19 +29,18 @@
   if (self) {
     _frameRate = frameRate;
     NSArray *value = colorValues[@"k"];
-    if ([value isKindOfClass:[NSArray class]] &&
-        [[(NSArray *)value firstObject] isKindOfClass:[NSDictionary class]] &&
-        [(NSArray *)value firstObject][@"t"]) {
-      //Keyframes
-      [self _buildAnimationForKeyframes:value];
+    if ([colorValues isKindOfClass:[NSArray class]] &&
+        [[(NSArray *)colorValues firstObject] isKindOfClass:[NSDictionary class]] &&
+        [(NSArray *)colorValues firstObject][@"t"]) {
+        //Keyframes
+        [self _buildAnimationForKeyframes:value];
     } else {
-      //Single Value, no animation
-      _initialColor = [[self _colorValueFromArray:value] copy];
+        self.initialColor = [[self _colorValueFromArray:value] copy];
     }
-    if (colorValues[@"x"]) {
-        NSLog(@"%s: Warning: expressions are not supported", __PRETTY_FUNCTION__);
-    }
-  }
+   }
+   if (colorValues[@"x"]) {
+     NSLog(@"%s: Warning: expressions are not supported", __PRETTY_FUNCTION__);
+   }
   return self;
 }
 
@@ -85,7 +84,7 @@
       // Add start value
       if (startColor) {
         if (keyframe == keyframes.firstObject) {
-          _initialColor = startColor;
+          self.initialColor = startColor;
         }
         [colorValues addObject:(id)[[startColor copy] CGColor]];
         if (timingFunctions.count) {

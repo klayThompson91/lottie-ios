@@ -10,11 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "LOTAnimatableValue.h"
 #import "LOTPlatformCompat.h"
+#import "LOTColorValue.h"
 
-@interface LOTAnimatableColorValue : NSObject <LOTAnimatableValue>
+@interface LOTAnimatableColorValue : LOTColorValue <LOTAnimatableValue>
 
 - (instancetype)initWithColorValues:(NSDictionary *)colorValues frameRate:(NSNumber *)frameRate;
-
-@property (nonatomic, readonly) UIColor *initialColor;
 
 @end

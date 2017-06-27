@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "LOTAnimationView.h"
 
 @class LOTLayerGroup;
 @class LOTLayer;
@@ -16,6 +17,7 @@
 @interface LOTComposition : NSObject
 
 - (instancetype)initWithJSON:(NSDictionary *)jsonDictionary;
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary layerColors:(LOTLayerColorMap)layerColors;
 
 @property (nonatomic, readonly) CGRect compBounds;
 @property (nonatomic, readonly) NSNumber *startFrame;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "LOTAnimationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
                        withBounds:(CGRect)bounds
                     withFramerate:(NSNumber * _Nullable)framerate
                    withAssetGroup:(LOTAssetGroup * _Nullable)assetGroup;
+
+- (instancetype)initWithLayerJSON:(NSArray *)layersJSON
+                       withBounds:(CGRect)bounds
+                    withFramerate:(NSNumber * _Nullable)framerate
+                   withAssetGroup:(LOTAssetGroup * _Nullable)assetGroup
+                  withLayerColors:(LOTLayerColorMap _Nullable)layerColors;
 
 @property (nonatomic, readonly) NSArray <LOTLayer *> *layers;
 
