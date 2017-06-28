@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "LOTPlatformCompat.h"
+#import "LOTAnimatableValue.h"
 
-@interface LOTColorValue : NSObject
+@interface LOTColorValue : NSObject <LOTAnimatableValue>
 
 - (instancetype)initWithColorValue:(UIColor *)color;
 

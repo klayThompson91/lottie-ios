@@ -8,7 +8,7 @@
 
 #import "LOTColorValue.h"
 
-@implementation LOTColorValue
+@implementation LOTColorValue 
 
 - (instancetype)initWithColorValue:(UIColor *)color {
     if (self = [super init]) {
@@ -16,6 +16,14 @@
     }
     
     return self;
+}
+
+- (BOOL)hasAnimation {
+    return false;
+}
+
+- (CAKeyframeAnimation *)animationForKeyPath:(NSString *)keypath {
+    return nil;
 }
 
 @end

@@ -12,7 +12,7 @@
 #import "LOTPlatformCompat.h"
 #import "LOTColorValue.h"
 
-@interface LOTAnimatableColorValue : LOTColorValue <LOTAnimatableValue>
+@interface LOTAnimatableColorValue : LOTColorValue
 
 - (instancetype)initWithColorValues:(NSDictionary *)colorValues frameRate:(NSNumber *)frameRate;
 
