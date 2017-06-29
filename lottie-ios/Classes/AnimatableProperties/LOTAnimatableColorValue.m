@@ -38,9 +38,9 @@
   if (self) {
     _frameRate = frameRate;
     NSArray *value = colorValues[@"k"];
-    if ([colorValues isKindOfClass:[NSArray class]] &&
-        [[(NSArray *)colorValues firstObject] isKindOfClass:[NSDictionary class]] &&
-        [(NSArray *)colorValues firstObject][@"t"]) {
+    if ([value isKindOfClass:[NSArray class]] &&
+        [[(NSArray *)value firstObject] isKindOfClass:[NSDictionary class]] &&
+        [(NSArray *)value firstObject][@"t"]) {
         //Keyframes
         [self _buildAnimationForKeyframes:value];
     } else {
