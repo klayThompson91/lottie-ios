@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LOTPlatformCompat.h"
 
-@class LOTColorValue;
+@class LOTAnimatableColorValue;
 @class LOTAnimatableNumberValue;
 
 typedef enum : NSUInteger {
@@ -30,7 +30,7 @@ typedef enum : NSUInteger {
 - (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate;
 
 @property (nonatomic, readonly) BOOL fillEnabled;
-@property (nonatomic, readonly) LOTColorValue *color;
+@property (nonatomic, readonly) LOTAnimatableColorValue *color;
 @property (nonatomic, readonly) LOTAnimatableNumberValue *opacity;
 @property (nonatomic, readonly) LOTAnimatableNumberValue *width;
 @property (nonatomic, readonly) LOTLineCapType capType;

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "LOTAnimationView.h"
 
-@class LOTColorValue;
 @class LOTAnimatableNumberValue;
+@class LOTAnimatableColorValue;
 
 @interface LOTShapeFill : NSObject
 
@@ -18,7 +18,7 @@
 - (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate customColor:(UIColor *)color;
 
 @property (nonatomic, readonly) BOOL fillEnabled;
-@property (nonatomic, readonly) LOTColorValue *color;
+@property (nonatomic, readonly) LOTAnimatableColorValue *color;
 @property (nonatomic, readonly) LOTAnimatableNumberValue *opacity;
 
 @end

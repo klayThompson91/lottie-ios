@@ -51,7 +51,7 @@
       _fillLayer = [CAShapeLayer layer];
       _fillLayer.allowsEdgeAntialiasing = YES;
       _fillLayer.path = _path.shapePath.initialShape.CGPath;
-      _fillLayer.fillColor = _fill.color.initialColor.CGColor;
+      _fillLayer.fillColor = (_fill.color.initialColor) ? _fill.color.initialColor.CGColor : _fill.color.customColor.CGColor;
       _fillLayer.opacity = _fill.opacity.initialValue.floatValue;
       [self addSublayer:_fillLayer];
     }
@@ -60,7 +60,7 @@
       _strokeLayer = [LOTStrokeShapeLayer layer];
       _strokeLayer.allowsEdgeAntialiasing = YES;
       _strokeLayer.path = _path.shapePath.initialShape.CGPath;
-      _strokeLayer.strokeColor = _stroke.color.initialColor.CGColor;
+      _strokeLayer.strokeColor = (_stroke.color.initialColor) ? _stroke.color.initialColor.CGColor : _stroke.color.customColor.CGColor;
       _strokeLayer.opacity = _stroke.opacity.initialValue.floatValue;
       _strokeLayer.lineWidth = _stroke.width.initialValue.floatValue;
       _strokeLayer.lineDashPattern = _stroke.lineDashPattern;

@@ -28,7 +28,7 @@
   NSDictionary *color = jsonDictionary[@"c"];
   if (color) {
     if (customColor) {
-        _color = [[LOTColorValue alloc] initWithColorValue:customColor];
+        _color = [[LOTAnimatableColorValue alloc] initWithCustomColor:customColor];
     } else {
         _color = [[LOTAnimatableColorValue alloc] initWithColorValues:color frameRate:frameRate];
     }

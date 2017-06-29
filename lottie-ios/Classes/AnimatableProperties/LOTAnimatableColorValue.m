@@ -24,6 +24,15 @@
 
 @implementation LOTAnimatableColorValue
 
+- (instancetype)initWithCustomColor:(UIColor *)customColor {
+    self = [super init];
+    if (self) {
+        _customColor = customColor;
+    }
+    
+    return self;
+}
+
 - (instancetype)initWithColorValues:(NSDictionary *)colorValues frameRate:(NSNumber *)frameRate {
   self = [super init];
   if (self) {
@@ -35,7 +44,7 @@
         //Keyframes
         [self _buildAnimationForKeyframes:value];
     } else {
-        self.initialColor = [[self _colorValueFromArray:value] copy];
+        _initialColor = [[self _colorValueFromArray:value] copy];
     }
    }
    if (colorValues[@"x"]) {
@@ -84,7 +93,7 @@
       // Add start value
       if (startColor) {
         if (keyframe == keyframes.firstObject) {
-          self.initialColor = startColor;
+          _initialColor = startColor;
         }
         [colorValues addObject:(id)[[startColor copy] CGColor]];
         if (timingFunctions.count) {
@@ -197,7 +206,7 @@
 }
 
 - (NSString *)description {
-  return self.initialColor.description;
+    return (self.initialColor) ? self.initialColor.description : self.customColor;
 }
 
 @end
