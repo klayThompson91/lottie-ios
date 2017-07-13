@@ -141,7 +141,7 @@
 		481A4AEB1E4A78A0003CF62B /* UIBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 481A4AE01E4A78A0003CF62B /* UIBezierPath.m */; };
 		481A4AEC1E4A78A0003CF62B /* UIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 481A4AE11E4A78A0003CF62B /* UIColor.h */; };
 		481A4AED1E4A78A0003CF62B /* UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 481A4AE21E4A78A0003CF62B /* UIColor.m */; };
-		481A4AEE1E4A78A5003CF62B /* LOTPlatformCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = 481A4ADC1E4A78A0003CF62B /* LOTPlatformCompat.h */; };
+		481A4AEE1E4A78A5003CF62B /* LOTPlatformCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = 481A4ADC1E4A78A0003CF62B /* LOTPlatformCompat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		484EBA161E565AF700D4CAD9 /* LOTAsset.h in Headers */ = {isa = PBXBuildFile; fileRef = 484EBA141E565AF700D4CAD9 /* LOTAsset.h */; };
 		484EBA171E565AF700D4CAD9 /* LOTAsset.h in Headers */ = {isa = PBXBuildFile; fileRef = 484EBA141E565AF700D4CAD9 /* LOTAsset.h */; };
 		484EBA181E565AF700D4CAD9 /* LOTAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 484EBA151E565AF700D4CAD9 /* LOTAsset.m */; };
@@ -163,7 +163,7 @@
 		4883E4F41E5FA5EE00027E57 /* LOTAssetGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4883E4ED1E5FA5EE00027E57 /* LOTAssetGroup.m */; };
 		4883E4FA1E5FA67200027E57 /* LOTStrokeShapeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 489F8E111E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.m */; };
 		4883E4FB1E5FA67200027E57 /* CGGeometry+LOTAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 48183C9B1E54E20B0039F121 /* CGGeometry+LOTAdditions.m */; };
-		4883E56F1E64EF9200027E57 /* LOTPlatformCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = 481A4ADC1E4A78A0003CF62B /* LOTPlatformCompat.h */; };
+		4883E56F1E64EF9200027E57 /* LOTPlatformCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = 481A4ADC1E4A78A0003CF62B /* LOTPlatformCompat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		489F8E121E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 489F8E101E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.h */; };
 		489F8E131E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 489F8E101E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.h */; };
 		489F8E141E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 489F8E111E4CF3BE00F2DEB7 /* LOTStrokeShapeLayer.m */; };

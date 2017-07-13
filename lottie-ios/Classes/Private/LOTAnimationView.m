@@ -180,11 +180,18 @@
 # pragma mark - Initializers
 
 + (instancetype)animationNamed:(NSString *)animationName {
-  return [self animationNamed:animationName inBundle:[NSBundle mainBundle]];
+  return [self animationNamed:animationName withLayerColors:nil];
 }
 
++ (instancetype)animationNamed:(NSString *)animationName withLayerColors:(LOTLayerColorMap)layerColors {
+  return [self animationNamed:animationName inBundle:[NSBundle mainBundle] withLayerColors:layerColors];
+}
 
 + (instancetype)animationNamed:(NSString *)animationName inBundle:(NSBundle *)bundle {
+  return [self animationNamed:animationName inBundle:bundle withLayerColors:nil];
+}
+
++ (instancetype)animationNamed:(NSString *)animationName inBundle:(NSBundle *)bundle withLayerColors:(LOTLayerColorMap)layerColors {
   NSArray *components = [animationName componentsSeparatedByString:@"."];
   animationName = components.firstObject;
   
@@ -199,7 +206,7 @@
   NSDictionary  *JSONObject = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
                                                                          options:0 error:&error] : nil;
   if (JSONObject && !error) {
-    LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:JSONObject];
+    LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:JSONObject layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:JSONObject];
     [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
     return [[LOTAnimationView alloc] initWithModel:laScene];
   }
@@ -211,7 +218,11 @@
 }
 
 + (instancetype)animationFromJSON:(NSDictionary *)animationJSON {
-  LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:animationJSON];
+  return [self animationFromJSON:animationJSON withLayerColors:nil];
+}
+
++ (instancetype)animationFromJSON:(NSDictionary *)animationJSON withLayerColors:(LOTLayerColorMap)layerColors {
+  LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:animationJSON layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:animationJSON];
   return [[LOTAnimationView alloc] initWithModel:laScene];
 }
 

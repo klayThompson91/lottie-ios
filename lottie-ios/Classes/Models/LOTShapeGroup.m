@@ -17,19 +17,23 @@
 
 @implementation LOTShapeGroup
 
-- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds {
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds customColor:(UIColor *)customColor {
   self = [super init];
   if (self) {
-    [self _mapFromJSON:jsonDictionary frameRate:frameRate compBounds:compBounds];
+    [self _mapFromJSON:jsonDictionary frameRate:frameRate compBounds:compBounds customColor:customColor];
   }
   return self;
 }
 
-- (void)_mapFromJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds {
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds {
+    return [self initWithJSON:jsonDictionary frameRate:frameRate compBounds:compBounds customColor:nil];
+}
+
+- (void)_mapFromJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds customColor:(UIColor *)customColor {
   NSArray *itemsJSON = jsonDictionary[@"it"];
   NSMutableArray *items = [NSMutableArray array];
   for (NSDictionary *itemJSON in itemsJSON) {
-    id newItem = [LOTShapeGroup shapeItemWithJSON:itemJSON frameRate:frameRate compBounds:compBounds];
+    id newItem = [LOTShapeGroup shapeItemWithJSON:itemJSON frameRate:frameRate compBounds:compBounds customColor:customColor];
     if (newItem) {
       [items addObject:newItem];
     }
@@ -38,16 +42,26 @@
 }
 
 + (id)shapeItemWithJSON:(NSDictionary *)itemJSON frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds {
+  return [LOTShapeGroup shapeItemWithJSON:itemJSON frameRate:frameRate compBounds:compBounds customColor:nil];
+}
+
++ (id)shapeItemWithJSON:(NSDictionary *)itemJSON frameRate:(NSNumber *)frameRate compBounds:(CGRect)compBounds customColor:(UIColor *)customColor {
   NSString *type = itemJSON[@"ty"];
   if ([type isEqualToString:@"gr"]) {
-    LOTShapeGroup *group = [[LOTShapeGroup alloc] initWithJSON:itemJSON frameRate:frameRate compBounds:compBounds];
+    LOTShapeGroup *group = [[LOTShapeGroup alloc] initWithJSON:itemJSON frameRate:frameRate compBounds:compBounds customColor:customColor];
     return group;
   } else if ([type isEqualToString:@"st"]) {
-    LOTShapeStroke *stroke = [[LOTShapeStroke alloc] initWithJSON:itemJSON frameRate:frameRate];
-    return stroke;
+    if (customColor) {
+        return [[LOTShapeStroke alloc] initWithJSON:itemJSON frameRate:frameRate customColor:customColor];
+    } else {
+        return [[LOTShapeStroke alloc] initWithJSON:itemJSON frameRate:frameRate];
+    }
   } else if ([type isEqualToString:@"fl"]) {
-    LOTShapeFill *fill = [[LOTShapeFill alloc] initWithJSON:itemJSON frameRate:frameRate];
-    return fill;
+    if (customColor) {
+        return [[LOTShapeFill alloc] initWithJSON:itemJSON frameRate:frameRate customColor:customColor];
+    } else {
+        return [[LOTShapeFill alloc] initWithJSON:itemJSON frameRate:frameRate];
+    }
   } else if ([type isEqualToString:@"tr"]) {
     LOTShapeTransform *transform = [[LOTShapeTransform alloc] initWithJSON:itemJSON frameRate:frameRate compBounds:compBounds];
     return transform;

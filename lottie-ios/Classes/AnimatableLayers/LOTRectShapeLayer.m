@@ -175,7 +175,7 @@
     if (fill) {
       _fillLayer = [LOTRoundRectLayer layer];
       _fillLayer.allowsEdgeAntialiasing = YES;
-      _fillLayer.fillColor = _fill.color.initialColor.CGColor;
+      _fillLayer.fillColor = (_fill.color.initialColor) ? _fill.color.initialColor.CGColor : _fill.color.customColor.CGColor;
       _fillLayer.opacity = _fill.opacity.initialValue.floatValue;
       _fillLayer.rectCornerRadius = rectShape.cornerRadius.initialValue.floatValue;
       _fillLayer.rectSize = rectShape.size.initialPoint;
@@ -186,7 +186,7 @@
     if (stroke) {
       _strokeLayer = [LOTRoundRectLayer layer];
       _strokeLayer.allowsEdgeAntialiasing = YES;
-      _strokeLayer.strokeColor = _stroke.color.initialColor.CGColor;
+      _strokeLayer.strokeColor = (_stroke.color.initialColor) ? _stroke.color.initialColor.CGColor : _stroke.color.customColor.CGColor;
       _strokeLayer.opacity = _stroke.opacity.initialValue.floatValue;
       _strokeLayer.lineWidth = _stroke.width.initialValue.floatValue;
       _strokeLayer.fillColor = nil;

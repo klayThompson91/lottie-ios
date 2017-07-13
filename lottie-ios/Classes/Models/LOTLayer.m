@@ -24,21 +24,30 @@
 - (instancetype)initWithJSON:(NSDictionary *)jsonDictionary
               withCompBounds:(CGRect)compBounds
                withFramerate:(NSNumber *)framerate
-              withAssetGroup:(LOTAssetGroup *)assetGroup {
+              withAssetGroup:(LOTAssetGroup *)assetGroup
+             withLayerColors:(LOTLayerColorMap)layerColors {
   self = [super init];
   if (self) {
     [self _mapFromJSON:jsonDictionary
         withCompBounds:compBounds
          withFramerate:framerate
-     withAssetGroup:assetGroup];
+        withAssetGroup:assetGroup
+       withLayerColors:layerColors];
   }
   return self;
+}
+
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary
+              withCompBounds:(CGRect)compBounds
+               withFramerate:(NSNumber *)framerate
+              withAssetGroup:(LOTAssetGroup *)assetGroup {
+    return [self initWithJSON:jsonDictionary withCompBounds:compBounds withFramerate:framerate withAssetGroup:assetGroup withLayerColors:nil];
 }
 
 - (void)_mapFromJSON:(NSDictionary *)jsonDictionary
       withCompBounds:(CGRect)compBounds
        withFramerate:(NSNumber *)framerate
-      withAssetGroup:(LOTAssetGroup *)assetGroup{
+      withAssetGroup:(LOTAssetGroup *)assetGroup withLayerColors:(LOTLayerColorMap)layerColors {
   
   _parentCompBounds = compBounds;
   _layerName = [jsonDictionary[@"nm"] copy];
@@ -133,8 +142,9 @@
   _masks = masks.count ? masks : nil;
   
   NSMutableArray *shapes = [NSMutableArray array];
+  UIColor *customColor = layerColors[_layerName];
   for (NSDictionary *shapeJSON in jsonDictionary[@"shapes"]) {
-    id shapeItem = [LOTShapeGroup shapeItemWithJSON:shapeJSON frameRate:_framerate compBounds:_layerBounds];
+      id shapeItem = (customColor) ? [LOTShapeGroup shapeItemWithJSON:shapeJSON frameRate:_framerate compBounds:_layerBounds customColor:customColor] : [LOTShapeGroup shapeItemWithJSON:shapeJSON frameRate:_framerate compBounds:_layerBounds];
     if (shapeItem) {
       [shapes addObject:shapeItem];
     }

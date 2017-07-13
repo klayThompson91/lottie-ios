@@ -13,15 +13,19 @@
 
 @implementation LOTComposition
 
-- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary {
+-(instancetype)initWithJSON:(NSDictionary *)jsonDictionary layerColors:(LOTLayerColorMap)layerColors {
   self = [super init];
   if (self) {
-    [self _mapFromJSON:jsonDictionary];
+      [self _mapFromJSON:jsonDictionary layerColors: layerColors];
   }
   return self;
 }
 
-- (void)_mapFromJSON:(NSDictionary *)jsonDictionary {
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary {
+    return [self initWithJSON:jsonDictionary layerColors:nil];
+}
+
+- (void)_mapFromJSON:(NSDictionary *)jsonDictionary layerColors:(LOTLayerColorMap)layerColors {
   NSNumber *width = jsonDictionary[@"w"];
   NSNumber *height = jsonDictionary[@"h"];
   if (width && height) {
@@ -46,10 +50,18 @@
   
   NSArray *layersJSON = jsonDictionary[@"layers"];
   if (layersJSON) {
-    _layerGroup = [[LOTLayerGroup alloc] initWithLayerJSON:layersJSON
-                                                withBounds:_compBounds
-                                             withFramerate:_framerate
-                                            withAssetGroup:_assetGroup];
+    if (layerColors) {
+      _layerGroup = [[LOTLayerGroup alloc] initWithLayerJSON:layersJSON
+                                                  withBounds:_compBounds
+                                               withFramerate:_framerate
+                                              withAssetGroup:_assetGroup
+                                             withLayerColors:layerColors];
+    } else {
+      _layerGroup = [[LOTLayerGroup alloc] initWithLayerJSON:layersJSON
+                                                  withBounds:_compBounds
+                                               withFramerate:_framerate
+                                              withAssetGroup:_assetGroup];
+    }
   }
   
   [_assetGroup finalizeInitialization];

@@ -143,7 +143,7 @@ const CGFloat kEllipseControlPointPercentage = 0.55228;
     if (fill) {
       _fillLayer = [LOTCircleShapeLayer new];
       _fillLayer.allowsEdgeAntialiasing = YES;
-      _fillLayer.fillColor = _fill.color.initialColor.CGColor;
+      _fillLayer.fillColor = (_fill.color.initialColor) ? _fill.color.initialColor.CGColor : _fill.color.customColor.CGColor;
       _fillLayer.opacity = _fill.opacity.initialValue.floatValue;
       _fillLayer.circlePosition = circleShape.position.initialPoint;
       _fillLayer.circleSize = circleShape.size.initialPoint;
@@ -153,7 +153,7 @@ const CGFloat kEllipseControlPointPercentage = 0.55228;
     if (stroke) {
       _strokeLayer = [LOTCircleShapeLayer new];
       _strokeLayer.allowsEdgeAntialiasing = YES;
-      _strokeLayer.strokeColor = _stroke.color.initialColor.CGColor;
+      _strokeLayer.strokeColor = (_stroke.color.initialColor) ? _stroke.color.initialColor.CGColor : _stroke.color.customColor.CGColor;
       _strokeLayer.opacity = _stroke.opacity.initialValue.floatValue;
       _strokeLayer.lineWidth = _stroke.width.initialValue.floatValue;
       _strokeLayer.fillColor = nil;

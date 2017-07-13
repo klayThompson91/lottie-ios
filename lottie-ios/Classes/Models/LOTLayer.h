@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LOTPlatformCompat.h"
+#import "LOTAnimationView.h"
 
 @class LOTShapeGroup;
 @class LOTMask;
@@ -35,6 +36,12 @@ typedef enum : NSInteger {
 } LOTMatteType;
 
 @interface LOTLayer : NSObject
+
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary
+              withCompBounds:(CGRect)compBounds
+               withFramerate:(NSNumber *)framerate
+              withAssetGroup:(LOTAssetGroup *)assetGroup
+             withLayerColors:(LOTLayerColorMap)layerColors;
 
 - (instancetype)initWithJSON:(NSDictionary *)jsonDictionary
               withCompBounds:(CGRect)compBounds

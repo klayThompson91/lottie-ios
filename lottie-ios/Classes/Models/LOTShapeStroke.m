@@ -12,18 +12,26 @@
 
 @implementation LOTShapeStroke
 
-- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate {
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate customColor:(UIColor *)customColor {
   self = [super init];
   if (self) {
-    [self _mapFromJSON:jsonDictionary frameRate:frameRate];
+    [self _mapFromJSON:jsonDictionary frameRate:frameRate customColor:customColor];
   }
   return self;
 }
 
-- (void)_mapFromJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate {
+- (instancetype)initWithJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate {
+  return [self initWithJSON:jsonDictionary frameRate:frameRate customColor:nil];
+}
+
+- (void)_mapFromJSON:(NSDictionary *)jsonDictionary frameRate:(NSNumber *)frameRate customColor:(UIColor *)customColor {
   NSDictionary *color = jsonDictionary[@"c"];
   if (color) {
-    _color = [[LOTAnimatableColorValue alloc] initWithColorValues:color frameRate:frameRate];
+    if (customColor) {
+        _color = [[LOTAnimatableColorValue alloc] initWithCustomColor:customColor];
+    } else {
+        _color = [[LOTAnimatableColorValue alloc] initWithColorValues:color frameRate:frameRate];
+    }
   }
   
   NSDictionary *width = jsonDictionary[@"w"];
