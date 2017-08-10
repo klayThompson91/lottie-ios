@@ -200,12 +200,17 @@
     return [[LOTAnimationView alloc] initWithModel:comp];
   }*/
   
+    NSLog(@"Caching is disabled");
+    
   NSError *error;
   NSString *filePath = [bundle pathForResource:animationName ofType:@"json"];
   NSData *jsonData = [[NSData alloc] initWithContentsOfFile:filePath];
   NSDictionary  *JSONObject = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
                                                                          options:0 error:&error] : nil;
   if (JSONObject && !error) {
+      
+      NSLog(@"%@", layerColors.description);
+      
     LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:JSONObject layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:JSONObject];
     //[[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
     return [[LOTAnimationView alloc] initWithModel:laScene];
