@@ -195,10 +195,10 @@
   NSArray *components = [animationName componentsSeparatedByString:@"."];
   animationName = components.firstObject;
   
-  LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
+  /*LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
   if (comp) {
     return [[LOTAnimationView alloc] initWithModel:comp];
-  }
+  }*/
   
   NSError *error;
   NSString *filePath = [bundle pathForResource:animationName ofType:@"json"];
@@ -207,7 +207,7 @@
                                                                          options:0 error:&error] : nil;
   if (JSONObject && !error) {
     LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:JSONObject layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:JSONObject];
-    [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
+    //[[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
     return [[LOTAnimationView alloc] initWithModel:laScene];
   }
   
