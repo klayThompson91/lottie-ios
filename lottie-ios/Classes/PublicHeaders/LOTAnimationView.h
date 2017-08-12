@@ -13,8 +13,17 @@
 typedef void (^LOTAnimationCompletionBlock)(BOOL animationFinished);
 typedef NSDictionary<NSString *, UIColor *> * LOTLayerColorMap;
 
+/**
+    LOTAnimationView's go through a pre-processing step to convert afterEffects JSON
+    into animation models. This can be costly so the CacheStrategy allows you to define
+    whether to cache these animation models or not.
+*/
 typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
+    
+    /// Cache the underlying animation model for the current view.
     LOTCacheStrategyAlwaysCache,
+    
+    /// Do not cache the underlying animation model for the current view.
     LOTCacheStrategyNeverCache
 };
 
@@ -30,7 +39,7 @@ typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
     Basic initializers that can create a LOTAnimationView from the main bundle, 
     passed in custom bundle, a url, or at a specific location on the file system.
     All of these initializers will cache LOTAnimationView's underlying animation model 
-    for better performance.
+    by default for better performance.
 */
 + (nonnull instancetype)animationNamed:(nonnull NSString *)animationName NS_SWIFT_NAME(init(name:));
 + (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
@@ -40,7 +49,6 @@ typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
 
 /**
     Use these initializers if you want to specify a caching strategy for your LOTAnimationView.
-    The default policy is to cache LOTAnimationView's underlying animation model.
 */
 + (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
                     usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(name:cacheStrategy:));
@@ -66,7 +74,7 @@ typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
 
 /**
     Use this initializer to create a LOTAnimationView from a AfterEffects Dictionary.
-    No caching is applied when using this initializer, it is your responsibility to cache the dictionary.
+    No caching is applied when using this initializer.
 */
 + (nonnull instancetype)animationFromJSON:(nonnull NSDictionary *)animationJSON NS_SWIFT_NAME(init(json:));
 
