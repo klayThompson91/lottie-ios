@@ -201,70 +201,65 @@
 
 # pragma mark - Initializers
 
-+ (instancetype)animationNamed:(NSString *)animationName {
-  return [self animationNamed:animationName inBundle:[NSBundle mainBundle]];
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName {
+  return [self animationNamed:animationName inBundle:[NSBundle mainBundle] withLayerColors:nil usingCacheStrategy:LOTCacheStrategyAlwaysCache];
 }
 
-
-+ (instancetype)animationNamed:(NSString *)animationName inBundle:(NSBundle *)bundle {
-  NSArray *components = [animationName componentsSeparatedByString:@"."];
-  animationName = components.firstObject;
-  LOTAnimationView *animationView;
-  LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
-  if (comp) {
-    animationView = [[LOTAnimationView alloc] initWithModel:comp inBundle:bundle];
-    animationView.cacheKey = animationName;
-    return animationView;
-  }
-  
-  NSError *error;
-  NSString *filePath = [bundle pathForResource:animationName ofType:@"json"];
-  NSData *jsonData = [[NSData alloc] initWithContentsOfFile:filePath];
-  NSDictionary  *JSONObject = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                         options:0 error:&error] : nil;
-  if (JSONObject && !error) {
-    LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:JSONObject];
-    [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
-    animationView = [[LOTAnimationView alloc] initWithModel:laScene inBundle:bundle];
-    animationView.cacheKey = animationName;
-    return animationView;
-  }
-  
-  NSException* resourceNotFoundException = [NSException exceptionWithName:@"ResourceNotFoundException"
-                                                                   reason:[error localizedDescription]
-                                                                 userInfo:nil];
-  @throw resourceNotFoundException;
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                    usingCacheStrategy:(LOTCacheStrategy)cacheStrategy {
+  return [self animationNamed:animationName inBundle:[NSBundle mainBundle] withLayerColors:nil usingCacheStrategy:cacheStrategy];
 }
 
-+ (instancetype)animationFromJSON:(NSDictionary *)animationJSON {
-    return [self animationFromJSON:animationJSON inBundle:[NSBundle mainBundle]];
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName withLayerColors:(nullable LOTLayerColorMap)layerColors {
+  return [self animationNamed:animationName inBundle:[NSBundle mainBundle] withLayerColors:layerColors usingCacheStrategy:LOTCacheStrategyNeverCache];
 }
 
-+ (instancetype)animationFromJSON:(NSDictionary *)animationJSON inBundle:(NSBundle *)bundle{
-  LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:animationJSON];
-  return [[LOTAnimationView alloc] initWithModel:laScene inBundle:bundle];
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName inBundle:(nonnull NSBundle *)bundle {
+  return [self animationNamed:animationName inBundle:bundle withLayerColors:nil usingCacheStrategy:LOTCacheStrategyAlwaysCache];
 }
 
-+ (instancetype)animationWithFilePath:(NSString *)filePath{
-    NSString *animationName = filePath;
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle
+                    usingCacheStrategy:(LOTCacheStrategy)cacheStrategy{
+  return [self animationNamed:animationName inBundle:bundle withLayerColors:nil usingCacheStrategy:cacheStrategy];
+}
+
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle
+                       withLayerColors:(nullable LOTLayerColorMap)layerColors {
+  return [self animationNamed:animationName inBundle:bundle withLayerColors:layerColors usingCacheStrategy:LOTCacheStrategyNeverCache];
+}
+
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle
+                       withLayerColors:(nullable LOTLayerColorMap)layerColors
+                    usingCacheStrategy:(LOTCacheStrategy)cacheStrategy {
+    
+    NSArray *components = [animationName componentsSeparatedByString:@"."];
+    animationName = components.firstObject;
     LOTAnimationView *animationView;
-    LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
-    if (comp) {
-        animationView = [[LOTAnimationView alloc] initWithModel:comp inBundle:[NSBundle mainBundle]];
-        animationView.cacheKey = animationName;
-        return animationView;
+    
+    if (cacheStrategy == LOTCacheStrategyAlwaysCache) {
+        LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
+        if (comp) {
+            animationView = [[LOTAnimationView alloc] initWithModel:comp inBundle:bundle];
+            animationView.cacheKey = animationName;
+            return animationView;
+        }
     }
     
     NSError *error;
+    NSString *filePath = [bundle pathForResource:animationName ofType:@"json"];
     NSData *jsonData = [[NSData alloc] initWithContentsOfFile:filePath];
     NSDictionary  *JSONObject = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
                                                                            options:0 error:&error] : nil;
     if (JSONObject && !error) {
-        LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:JSONObject];
-        laScene.rootDirectory = [filePath stringByDeletingLastPathComponent];
-        [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
-        animationView = [[LOTAnimationView alloc] initWithModel:laScene inBundle:[NSBundle mainBundle]];
-        animationView.cacheKey = animationName;
+        LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:JSONObject layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:JSONObject];
+        animationView = [[LOTAnimationView alloc] initWithModel:laScene inBundle:bundle];
+        if (cacheStrategy == LOTCacheStrategyAlwaysCache) {
+            [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
+            animationView.cacheKey = animationName;
+        }
         return animationView;
     }
     
@@ -274,38 +269,89 @@
     @throw resourceNotFoundException;
 }
 
-- (instancetype)initWithContentsOfURL:(NSURL *)url {
-  self = [super initWithFrame:CGRectZero];
-  if (self) {
-    self.cacheKey = url.absoluteString;
-    LOTComposition *laScene = [[LOTAnimationCache sharedCache] animationForKey:url.absoluteString];
-    if (laScene) {
-      [self _initializeAnimationContainer];
-      [self _setupWithSceneModel:laScene restoreAnimationState:NO];
-    } else {
-      _animationState = [[LOTAnimationState alloc] initWithDuration:1.f/60.f layer:nil frameRate:@1];
-      dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        NSData *animationData = [NSData dataWithContentsOfURL:url];
-        if (!animationData) {
-          return;
++ (nonnull instancetype)animationFromJSON:(nonnull NSDictionary *)animationJSON {
+  return [self animationFromJSON:animationJSON withLayerColors:nil];
+}
+
++ (nonnull instancetype)animationFromJSON:(nonnull NSDictionary *)animationJSON
+                          withLayerColors:(nullable LOTLayerColorMap)layerColors {
+  LOTComposition *laScene = (layerColors) ? [[LOTComposition alloc] initWithJSON:animationJSON layerColors:layerColors] : [[LOTComposition alloc] initWithJSON:animationJSON];
+  return [[LOTAnimationView alloc] initWithModel:laScene inBundle:[NSBundle mainBundle]];
+}
+
++ (nonnull instancetype)animationWithFilePath:(nonnull NSString *)filePath usingCacheStrategy:(LOTCacheStrategy)cacheStrategy {
+    NSString *animationName = filePath;
+    LOTAnimationView *animationView;
+    
+    if (cacheStrategy == LOTCacheStrategyAlwaysCache) {
+        LOTComposition *comp = [[LOTAnimationCache sharedCache] animationForKey:animationName];
+        if (comp) {
+            animationView = [[LOTAnimationView alloc] initWithModel:comp inBundle:[NSBundle mainBundle]];
+            animationView.cacheKey = animationName;
+            return animationView;
         }
-        NSError *error;
-        NSDictionary  *animationJSON = [NSJSONSerialization JSONObjectWithData:animationData
-                                                                       options:0 error:&error];
-        if (error || !animationJSON) {
-          return;
-        }
-        
-        LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:animationJSON];
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-          [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:url.absoluteString];
-          [self _initializeAnimationContainer];
-          [self _setupWithSceneModel:laScene restoreAnimationState:YES];
-        });
-      });
     }
-  }
-  return self;
+    
+    NSError *error;
+    NSData *jsonData = [[NSData alloc] initWithContentsOfFile:filePath];
+    NSDictionary  *JSONObject = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                           options:0 error:&error] : nil;
+    if (JSONObject && !error) {
+        LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:JSONObject];
+        laScene.rootDirectory = [filePath stringByDeletingLastPathComponent];
+        if (cacheStrategy == LOTCacheStrategyAlwaysCache) {
+            [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:animationName];
+            animationView.cacheKey = animationName;
+        }
+        animationView = [[LOTAnimationView alloc] initWithModel:laScene inBundle:[NSBundle mainBundle]];
+        return animationView;
+    }
+    
+    NSException* resourceNotFoundException = [NSException exceptionWithName:@"ResourceNotFoundException"
+                                                                     reason:[error localizedDescription]
+                                                                   userInfo:nil];
+    @throw resourceNotFoundException;
+}
+
+- (nonnull instancetype)initWithContentsOfURL:(nonnull NSURL *)url {
+    return [self initWithContentsOfURL:url usingCacheStrategy:LOTCacheStrategyAlwaysCache];
+}
+
+- (nonnull instancetype)initWithContentsOfURL:(nonnull NSURL *)url
+                           usingCacheStrategy:(LOTCacheStrategy)cacheStrategy {
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        LOTComposition *laScene = [[LOTAnimationCache sharedCache] animationForKey:url.absoluteString];
+        if (laScene && cacheStrategy == LOTCacheStrategyAlwaysCache) {
+            self.cacheKey = url.absoluteString;
+            [self _initializeAnimationContainer];
+            [self _setupWithSceneModel:laScene restoreAnimationState:NO];
+        } else {
+            _animationState = [[LOTAnimationState alloc] initWithDuration:1.f/60.f layer:nil frameRate:@1];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                NSData *animationData = [NSData dataWithContentsOfURL:url];
+                if (!animationData) {
+                    return;
+                }
+                NSError *error;
+                NSDictionary  *animationJSON = [NSJSONSerialization JSONObjectWithData:animationData
+                                                                               options:0 error:&error];
+                if (error || !animationJSON) {
+                    return;
+                }
+                
+                LOTComposition *laScene = [[LOTComposition alloc] initWithJSON:animationJSON];
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    if (cacheStrategy == LOTCacheStrategyAlwaysCache) {
+                        [[LOTAnimationCache sharedCache] addAnimation:laScene forKey:url.absoluteString];
+                    }
+                    [self _initializeAnimationContainer];
+                    [self _setupWithSceneModel:laScene restoreAnimationState:YES];
+                });
+            });
+        }
+    }
+    return self;
 }
 
 - (instancetype)initWithModel:(LOTComposition *)model inBundle:(NSBundle *)bundle{
@@ -412,18 +458,6 @@
 - (void)addSubview:(LOTView *)view
       toLayerNamed:(NSString *)layer {
   [_compLayer addSublayer:view toLayerNamed:layer];
-}
-
-- (void)setCacheEnable:(BOOL)cacheEnable{
-    _cacheEnable = cacheEnable;
-    if (!self.cacheKey) {
-        return;
-    }
-    if (cacheEnable) {
-        [[LOTAnimationCache sharedCache] addAnimation:_sceneModel forKey:self.cacheKey];
-    }else {
-        [[LOTAnimationCache sharedCache] removeAnimationForKey:self.cacheKey];
-    }
 }
 
 # pragma mark - Display Link

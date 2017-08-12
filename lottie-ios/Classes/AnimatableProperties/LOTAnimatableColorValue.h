@@ -13,8 +13,10 @@
 
 @interface LOTAnimatableColorValue : NSObject <LOTAnimatableValue>
 
-- (instancetype)initWithColorValues:(NSDictionary *)colorValues frameRate:(NSNumber *)frameRate;
-
 @property (nonatomic, readonly) UIColor *initialColor;
+@property (nonatomic, readonly) UIColor *customColor;
+
+- (instancetype)initWithColorValues:(NSDictionary *)colorValues frameRate:(NSNumber *)frameRate;
+- (instancetype)initWithCustomColor:(UIColor *)customColor;
 
 @end
