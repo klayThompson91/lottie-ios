@@ -13,22 +13,62 @@
 typedef void (^LOTAnimationCompletionBlock)(BOOL animationFinished);
 typedef NSDictionary<NSString *, UIColor *> * LOTLayerColorMap;
 
+typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
+    LOTCacheStrategyAlwaysCache,
+    LOTCacheStrategyNeverCache
+};
+
 @interface LOTAnimationView : LOTView
 
-+ (instancetype)animationNamed:(NSString *)animationName NS_SWIFT_NAME(init(name:));
-+ (instancetype)animationNamed:(NSString *)animationName
-               withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:layerColors:));
+/**
+    LOTAnimationView has a diverse array of initializers to suit a large breadth of needs
+    such as loading a view from a URL, the file system, custom bundles, and etc.
+    Please review the initializers to find the one appropriate for your use case.
+*/
 
-+ (instancetype)animationNamed:(NSString *)animationName inBundle:(NSBundle *)bundle NS_SWIFT_NAME(init(name:bundle:));
-+ (instancetype)animationNamed:(NSString *)animationName
-                      inBundle:(NSBundle *)bundle
-               withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:bundle:layerColors:));
+/**
+    Basic initializers that can create a LOTAnimationView from the main bundle, 
+    passed in custom bundle, a url, or at a specific location on the file system.
+    All of these initializers will cache LOTAnimationView's underlying animation model 
+    for better performance.
+*/
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName NS_SWIFT_NAME(init(name:));
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle NS_SWIFT_NAME(init(name:bundle:));
+- (nonnull instancetype)initWithContentsOfURL:(nonnull NSURL *)url NS_SWIFT_NAME(init(url:));
++ (nonnull instancetype)animationWithFilePath:(nonnull NSString *)filePath NS_SWIFT_NAME(init(filePath:));
 
-+ (instancetype)animationFromJSON:(NSDictionary *)animationJSON NS_SWIFT_NAME(init(json:));
-+ (instancetype)animationFromJSON:(NSDictionary *)animationJSON
-                  withLayerColors:(LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(json:layerColors:));
+/**
+    Use these initializers if you want to specify a caching strategy for your LOTAnimationView.
+    The default policy is to cache LOTAnimationView's underlying animation model.
+*/
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                    usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(name:cacheStrategy:));
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle
+                    usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(name:bundle:cacheStrategy:));
+- (nonnull instancetype)initWithContentsOfURL:(nonnull NSURL *)url
+                           usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(url:cacheStrategy:));
++ (nonnull instancetype)animationWithFilePath:(nonnull NSString *)filePath
+                           usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(url:cacheStrategy:));
 
-- (instancetype)initWithContentsOfURL:(NSURL *)url;
+/**
+    These initializers allow you to color each distinct layer of your LOTAnimationView.
+    When using these initializers, the underlying animation model is NEVER cached. This can not be changed.
+*/
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                       withLayerColors:(nullable LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:layerColors:));
++ (nonnull instancetype)animationNamed:(nonnull NSString *)animationName
+                              inBundle:(nonnull NSBundle *)bundle
+                       withLayerColors:(nullable LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(name:bundle:layerColors:));
++ (nonnull instancetype)animationFromJSON:(nonnull NSDictionary *)animationJSON
+                          withLayerColors:(nullable LOTLayerColorMap)layerColors NS_SWIFT_NAME(init(json:layerColors:));
+
+/**
+    Use this initializer to create a LOTAnimationView from a AfterEffects Dictionary.
+    No caching is applied when using this initializer, it is your responsibility to cache the dictionary.
+*/
++ (nonnull instancetype)animationFromJSON:(nonnull NSDictionary *)animationJSON NS_SWIFT_NAME(init(json:));
 
 @property (nonatomic, readonly) BOOL isAnimationPlaying;
 @property (nonatomic, assign) BOOL loopAnimation;
@@ -36,12 +76,12 @@ typedef NSDictionary<NSString *, UIColor *> * LOTLayerColorMap;
 @property (nonatomic, assign) CGFloat animationSpeed;
 @property (nonatomic, readonly) CGFloat animationDuration;
 
-- (void)playWithCompletion:(LOTAnimationCompletionBlock)completion;
+- (void)playWithCompletion:(nullable LOTAnimationCompletionBlock)completion;
 - (void)play;
 - (void)pause;
 
-- (void)addSubview:(LOTView *)view
-      toLayerNamed:(NSString *)layer;
+- (void)addSubview:(nonnull LOTView *)view
+      toLayerNamed:(nonnull NSString *)layer;
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 @property (nonatomic) LOTViewContentMode contentMode;
