@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, LOTCacheStrategy) {
 - (nonnull instancetype)initWithContentsOfURL:(nonnull NSURL *)url
                            usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(url:cacheStrategy:));
 + (nonnull instancetype)animationWithFilePath:(nonnull NSString *)filePath
-                           usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(url:cacheStrategy:));
+                           usingCacheStrategy:(LOTCacheStrategy)cacheStrategy NS_SWIFT_NAME(init(filePath:cacheStrategy:));
 
 /**
     These initializers allow you to color each distinct layer of your LOTAnimationView.
