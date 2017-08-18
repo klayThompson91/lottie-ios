@@ -47,9 +47,6 @@
         _initialColor = [[self _colorValueFromArray:value] copy];
     }
    }
-   if (colorValues[@"x"]) {
-     NSLog(@"%s: Warning: expressions are not supported", __PRETTY_FUNCTION__);
-   }
   return self;
 }
 

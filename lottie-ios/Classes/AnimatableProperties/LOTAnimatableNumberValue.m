@@ -38,9 +38,6 @@
       //Single Value, no animation
       _initialValue = [[self _numberValueFromObject:value] copy];
     }
-    if (numberValues[@"x"]) {
-      NSLog(@"%s: Warning: expressions are not supported", __PRETTY_FUNCTION__);
-    }
   }
   return self;
 }

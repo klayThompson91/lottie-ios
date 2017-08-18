@@ -339,9 +339,7 @@
         
         if (image) {
             _childSolid.contents = (__bridge id _Nullable)(image.CGImage);
-        } else {
-            NSLog(@"%s: Warn: image not found: %@", __PRETTY_FUNCTION__, _layerModel.imageAsset.imageName);
-        }
+        } 
     }
 }
 

@@ -38,9 +38,6 @@
       //Single Value, no animation
       _initialBounds = [self _boundsRectFromValueArray:value];
     }
-    if (sizeValue[@"x"]) {
-        NSLog(@"%s: Warning: expressions are not supported", __PRETTY_FUNCTION__);
-    }
   }
   return self;
 }
