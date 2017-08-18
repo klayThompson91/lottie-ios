@@ -166,16 +166,6 @@
                                    @10: @"layerIndex",
                                    @20: @"tint",
                                    @21: @"fill" };
-                             
-    for (NSDictionary *effect in effects) {
-      NSNumber *typeNumber = effect[@"ty"];
-      NSString *name = effect[@"nm"];
-      NSString *internalName = effect[@"mn"];
-      NSString *typeString = effectNames[typeNumber];
-      if (typeString) {
-        NSLog(@"%s: Warning: %@ effect not supported: %@ / %@", __PRETTY_FUNCTION__, typeString, internalName, name);
-      }
-    }
   }
   
   
